@@ -1,6 +1,7 @@
 # Load .env.development* files when running `wrangler dev`
 NEXTJS_ENV=development
 
+AUTH_URL=http://localhost:8787
 AUTH_SECRET=
 AUTH_GOOGLE_ID=
 AUTH_GOOGLE_SECRET=

@@ -32,6 +32,13 @@
 			"service": "parccours"
 		}
 	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "parccours-db",
+			"database_id": "a5f7805a-af41-49c6-89f7-f35c2c4b5301"
+		}
+	],
 	"observability": {
 		"enabled": false,
 		"head_sampling_rate": 1,

@@ -12,7 +12,8 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "db:migrate:local": "wrangler d1 migrations apply parccours-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply parccours-db --remote"
+    "db:migrate:remote": "wrangler d1 migrations apply parccours-db --remote",
+    "secrets:push": "node scripts/push-secrets.js"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.19.9",

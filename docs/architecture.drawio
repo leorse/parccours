@@ -1,0 +1,227 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="parccours-archi" name="Architecture ParcCours">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ============ CONTAINERS ============ -->
+        <mxCell id="devicesBox" value="Appareils (même compte Google)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#b85450;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="250" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="workerBox" value="Cloudflare Worker : parccours&#10;https://parccours.damien-messner.workers.dev" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;verticalAlign=top;align=left;fontStyle=1;fontSize=14;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="360" y="40" width="540" height="620" as="geometry" />
+        </mxCell>
+        <mxCell id="localBox" value="Poste de dev (Windows)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="700" width="520" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBox" value="CI/CD — Cloudflare Workers Builds" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#9673a6;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="620" y="700" width="610" height="300" as="geometry" />
+        </mxCell>
+
+        <!-- ============ DEVICES ============ -->
+        <mxCell id="phone" value="Téléphone&#10;PWA installée (standalone)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="210" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="desktop" value="Ordinateur&#10;navigateur ou PWA installée" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="210" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="swRuntime" value="Service Worker (Workbox)&#10;cache l'app shell&#10;NetworkOnly sur /api/*" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="210" width="210" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ============ WORKER INTERNALS ============ -->
+        <mxCell id="assets" value="Assets statiques (binding ASSETS)&#10;manifest.json · sw.js · icônes · JS/CSS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="95" width="500" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" value="Pages Next.js (App Router)&#10;/ · /chat · /progress&#10;client components" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="160" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="authjs" value="Auth.js / NextAuth v5&#10;session JWT en cookie signé&#10;trustHost + AUTH_URL en local" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="640" y="160" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="apiroutes" value="Route handlers (serveur)&#10;/api/auth/[...nextauth]&#10;/api/chat · /api/conversations&#10;/api/progress" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="255" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="libs" value="src/lib (server-only)&#10;oneMinAi.ts — proxy 1min.ai&#10;db.ts — getCloudflareContext()&#10;exercises.ts — prompts de correction" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="640" y="255" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="bindings" value="Bindings (wrangler.jsonc — commité)&#10;DB (D1) · ASSETS · IMAGES · WORKER_SELF_REFERENCE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="380" y="375" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="secrets" value="Secrets Cloudflare (chiffrés, jamais dans git)&#10;AUTH_SECRET · AUTH_GOOGLE_ID · AUTH_GOOGLE_SECRET · ONE_MIN_AI_API_KEY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="380" y="455" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="adapter" value="@opennextjs/cloudflare&#10;next build --webpack (next-pwa impose webpack) → .open-next/worker.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="380" y="535" width="500" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EXTERNAL ============ -->
+        <mxCell id="google" value="Google OAuth / OIDC&#10;accounts.google.com&#10;redirect URIs déclarés par environnement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="980" y="155" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="oneminai" value="API 1min.ai&#10;POST /api/chat-with-ai&#10;?isStreaming=true&#10;modèle gpt-4o-mini" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="980" y="260" width="250" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" value="Cloudflare D1 — parccours-db&#10;table progress&#10;(user_id, value, updated_at)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="990" y="375" width="230" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- ============ LOCAL DEV ============ -->
+        <mxCell id="envfiles" value=".env.local (next dev — :3000)&#10;.dev.vars (preview — :8787)&#10;hors git" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="750" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sourcecode" value="Code source&#10;src/ · next.config.ts&#10;wrangler.jsonc (commité)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="310" y="750" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="miniflare" value="wrangler dev / preview&#10;Miniflare (runtime Workers local)&#10;.wrangler/state → D1 SQLite" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="840" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="batfiles" value="preview-local.bat&#10;push-secrets.bat&#10;npm run db:migrate:local / :remote" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="310" y="840" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="migrations" value="migrations/0001_init.sql — CREATE TABLE progress" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="930" width="480" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ============ CI/CD ============ -->
+        <mxCell id="githubmain" value="GitHub — branche main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="640" y="750" width="260" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="githubbranch" value="GitHub — branches de dev / MR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="640" y="815" width="260" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="buildprod" value="Deploy command&#10;npx wrangler deploy → PROD (100% du trafic)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="950" y="745" width="260" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="buildpreview" value="Non-prod branch command&#10;npx wrangler versions upload&#10;→ URL de preview isolée, 0% du trafic" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="950" y="810" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="buildcmd" value="Build command (commun) : npx opennextjs-cloudflare build&#10;Attention : npm run build seul ne génère pas .open-next/&#10;Contrôle de branche = main (un nom de branche, pas une commande)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="640" y="895" width="570" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ============ LEGEND ============ -->
+        <mxCell id="legendBox" value="Légende" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;verticalAlign=top;align=left;fontStyle=1;fontSize=12;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="1270" y="40" width="230" height="275" as="geometry" />
+        </mxCell>
+        <mxCell id="lg1" value="Appareils / clients" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="85" width="200" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg2" value="Code applicatif (Next.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="120" width="200" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg3" value="Authentification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="155" width="200" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg4" value="Config / secrets / schéma" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="190" width="200" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg5" value="Services externes / stockage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="225" width="200" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg6" value="CI/CD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="260" width="200" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : client ============ -->
+        <mxCell id="e1" value="requêtes interceptées" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="phone" target="swRuntime">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="requêtes interceptées" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="desktop" target="swRuntime">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="HTTPS — app shell&#10;(cache si hors ligne)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="swRuntime" target="pages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="fetch /api/* — toujours réseau&#10;+ cookie de session" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="swRuntime" target="apiroutes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="sert sw.js + manifest.json&#10;(installation de la PWA)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="assets" target="swRuntime">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : dans le Worker ============ -->
+        <mxCell id="e6" value="signIn('google') / signOut / useSession" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="pages" target="authjs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="fetch JSON + lecture du flux SSE" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="pages" target="apiroutes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="auth() — 401 si pas de session" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="apiroutes" target="authjs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="appelle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="apiroutes" target="libs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="lit AUTH_SECRET&#10;AUTH_GOOGLE_ID / SECRET" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="authjs" target="secrets">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="lit ONE_MIN_AI_API_KEY" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;" edge="1" parent="1" source="libs" target="secrets">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="getCloudflareContext().env.DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="libs" target="bindings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : services externes ============ -->
+        <mxCell id="e13" value="1. redirection OAuth2 (consentement)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="authjs" target="google">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="2. callback + id_token&#10;(sub = id stable du compte)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="google" target="authjs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="POST chat-with-ai (header API-KEY)&#10;clé jamais exposée au client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="libs" target="oneminai">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="flux SSE : content / result / done" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="oneminai" target="libs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="SELECT / INSERT ... ON CONFLICT&#10;clé = user_id (sub Google)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="bindings" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : dev local ============ -->
+        <mxCell id="e18" value="injecte les variables" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="envfiles" target="miniflare">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="next dev / opennextjs preview" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="sourcecode" target="miniflare">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" value="db:migrate:local" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="migrations" target="miniflare">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="db:migrate:remote (wrangler, une fois par migration)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="migrations" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="lance le preview local" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="batfiles" target="miniflare">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" value="push-secrets.bat : wrangler secret put&#10;(à relancer si les secrets disparaissent)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="batfiles" target="secrets">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : CI/CD ============ -->
+        <mxCell id="e24" value="git push / merge de la MR" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="sourcecode" target="githubmain">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" value="déclenche" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="githubmain" target="buildprod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" value="déclenche" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="githubbranch" target="buildpreview">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" value="étape commune" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;" edge="1" parent="1" source="buildcmd" target="buildprod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" value="étape commune" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;" edge="1" parent="1" source="buildcmd" target="buildpreview">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e29" value="remplace la version en production" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="buildprod" target="workerBox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

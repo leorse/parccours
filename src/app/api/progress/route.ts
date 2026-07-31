@@ -3,7 +3,9 @@ import { getDb } from "@/lib/db";
 
 export async function GET() {
   const session = await auth();
-  if (!session?.user) {
+  // Une session émise avant l'ajout de `googleId` n'a pas d'id exploitable :
+  // on la refuse plutôt que d'écrire une ligne orpheline en base.
+  if (!session?.user?.id) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -17,7 +19,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await auth();
-  if (!session?.user) {
+  // Une session émise avant l'ajout de `googleId` n'a pas d'id exploitable :
+  // on la refuse plutôt que d'écrire une ligne orpheline en base.
+  if (!session?.user?.id) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 

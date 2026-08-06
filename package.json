@@ -7,13 +7,17 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy": "node scripts/deploy.js prod",
+    "deploy:dev": "node scripts/deploy.js dev",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "db:migrate:local": "wrangler d1 migrations apply parccours-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply parccours-db --remote",
-    "secrets:push": "node scripts/push-secrets.js"
+    "db:migrate:dev:local": "wrangler d1 migrations apply parccours-dev --env dev --local",
+    "db:migrate:dev:remote": "wrangler d1 migrations apply parccours-dev --env dev --remote",
+    "secrets:push": "node scripts/push-secrets.js",
+    "secrets:push:dev": "node scripts/push-secrets.js --env dev"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.19.9",

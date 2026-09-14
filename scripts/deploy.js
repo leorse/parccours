@@ -23,9 +23,13 @@ function git(...args) {
   return execFileSync("git", args, { encoding: "utf8" }).trim();
 }
 
-function run(command, args) {
+function run(command, args, extraEnv) {
   console.log(`\n> ${command} ${args.join(" ")}\n`);
-  const result = spawnSync(command, args, { stdio: "inherit", shell: true });
+  const result = spawnSync(command, args, {
+    stdio: "inherit",
+    shell: true,
+    env: extraEnv ? { ...process.env, ...extraEnv } : process.env,
+  });
   if (result.status !== 0) {
     fail(`la commande "${command} ${args.join(" ")}" a échoué`);
   }
@@ -104,7 +108,19 @@ async function main() {
     console.log("\nDéploiement sur le Worker de dev (parccours-dev).\n");
   }
 
-  run("npx", ["opennextjs-cloudflare", "build"]);
+  // Applique les migrations D1 distantes avant de déployer, pour éviter
+  // de pousser du code qui attend un schéma absent de la base cible.
+  const migrateArgs =
+    target === "prod"
+      ? ["wrangler", "d1", "migrations", "apply", "parccours-db", "--remote"]
+      : ["wrangler", "d1", "migrations", "apply", "parccours-dev", "--env", "dev", "--remote"];
+  run("npx", migrateArgs);
+
+  // APP_ENV doit être fixé au BUILD (pas seulement dans wrangler.jsonc) :
+  // les pages sans API dynamique (/, /chat, /progress) sont prérendues,
+  // donc generateMetadata() ne voit process.env.APP_ENV qu'à ce moment-là,
+  // jamais au runtime du Worker.
+  run("npx", ["opennextjs-cloudflare", "build"], { APP_ENV: target });
 
   // Sans --env, wrangler cible le Worker racine, c'est-à-dire la PROD.
   const deployArgs = ["wrangler", "deploy"];

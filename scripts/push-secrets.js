@@ -45,9 +45,11 @@ for (const key of SECRET_KEYS) {
 
   console.log(`Envoi de ${key}...`);
   const args = ["wrangler", "secret", "put", key];
-  if (cfEnv) {
-    args.push("--env", cfEnv);
-  }
+  // Wrangler exige un --env explicite dès qu'un environnement nommé (env.dev)
+  // existe dans la config, même pour cibler l'environnement racine (prod).
+  // `--env ""` en deux arguments séparés perd la valeur vide en passant par
+  // le shell Windows (spawnSync shell:true) : il faut un seul argument combiné.
+  args.push(cfEnv ? `--env=${cfEnv}` : `--env=""`);
 
   const result = spawnSync("npx", args, {
     input: value,

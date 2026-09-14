@@ -1,0 +1,215 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="parccours-deploiement" name="Déploiement ParcCours (prod / dev)">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1750" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ============ CONTAINERS ============ -->
+        <mxCell id="devBox" value="Poste de dev (Windows) — actions manuelles" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="380" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="prodBox" value="Cloudflare Worker : parccours (PROD)&#10;https://parccours.damien-messner.workers.dev" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#b85450;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="480" y="220" width="430" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="devWorkerBox" value="Cloudflare Worker : parccours-dev (PRÉ-PROD)&#10;https://parccours-dev.damien-messner.workers.dev" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#82b366;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="960" y="220" width="430" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="googleBox" value="Google Cloud Console — OAuth" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#d79b00;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="480" y="40" width="910" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="legendBox" value="Légende" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;verticalAlign=top;align=left;fontStyle=1;fontSize=12;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="1440" y="600" width="270" height="240" as="geometry" />
+        </mxCell>
+
+        <!-- ============ POSTE DE DEV ============ -->
+        <mxCell id="sourcecode" value="Code source&#10;src/ · wrangler.jsonc (commité)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="340" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="batfiles" value="deploy-dev.bat → node scripts/deploy.js dev&#10;deploy-prod.bat → node scripts/deploy.js prod&#10;push-secrets.bat / push-secrets-dev.bat&#10;preview-local.bat / preview-dev-local.bat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="guard" value="1. Garde-fous (PROD uniquement)&#10;branche = main · working tree propre&#10;git fetch origin main · HEAD == origin/main&#10;code de confirmation à retaper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="255" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="migrate" value="2. Migrations D1 distantes&#10;wrangler d1 migrations apply &lt;db&gt; --remote&#10;(parccours-db ou parccours-dev --env dev)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="350" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="buildstep" value="3. Build&#10;npx opennextjs-cloudflare build&#10;APP_ENV=&lt;target&gt; injecté au process&#10;→ generateMetadata() fige titre/manifest/icônes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="425" width="340" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="deploystep" value="4. Déploiement&#10;npx wrangler deploy&#10;+ --env dev si target=dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="510" width="340" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="githubmain" value="GitHub — origin/main&#10;(référence pour le garde-fou)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="600" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="envfilesProd" value=".dev.vars (secrets PROD, hors git)&#10;AUTH_SECRET · AUTH_GOOGLE_ID/SECRET&#10;ONE_MIN_AI_API_KEY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="680" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="envfilesDev" value=".dev.vars.dev (secrets DEV, hors git)&#10;AUTH_SECRET (≠ prod, sessions étanches)&#10;AUTH_GOOGLE_ID/SECRET + ONE_MIN_AI_API_KEY (partagés)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="760" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pushsecrets" value="node scripts/push-secrets.js [--env dev]&#10;wrangler secret put (un par un, stdin)&#10;à relancer si les secrets disparaissent côté Cloudflare" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="840" width="340" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ============ GOOGLE OAUTH ============ -->
+        <mxCell id="googleClient" value="Client OAuth Google (unique, partagé)&#10;AUTH_GOOGLE_ID / AUTH_GOOGLE_SECRET — mêmes valeurs en PROD et DEV" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="85" width="420" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="redirectURIs" value="Redirect URIs déclarées (une par environnement)&#10;.../api/auth/callback/google sur chaque domaine Worker" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="960" y="85" width="410" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ============ WORKER PROD ============ -->
+        <mxCell id="varsProd" value="vars (wrangler.jsonc, non-secret)&#10;APP_ENV = prod" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="260" width="390" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="secretsProd" value="Secrets Cloudflare (chiffrés)&#10;AUTH_SECRET (prod)&#10;AUTH_GOOGLE_ID / SECRET&#10;ONE_MIN_AI_API_KEY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="320" width="390" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="bindingsProd" value="Bindings : ASSETS · IMAGES&#10;WORKER_SELF_REFERENCE → parccours" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="405" width="390" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d1Prod" value="D1 — parccours-db&#10;a5f7805a-af41…" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="480" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="usersProd" value="Utilisateurs réels&#10;trafic 100%" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="600" width="390" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="noteProd" value="Manifest PWA prod (icônes/nom prod)&#10;figé au build par APP_ENV=prod" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="500" y="660" width="390" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ============ WORKER DEV ============ -->
+        <mxCell id="varsDev" value="vars (wrangler.jsonc — env.dev, non-secret)&#10;APP_ENV = dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="980" y="260" width="390" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="secretsDev" value="Secrets Cloudflare (chiffrés)&#10;AUTH_SECRET (dev, ≠ prod)&#10;AUTH_GOOGLE_ID / SECRET (partagés)&#10;ONE_MIN_AI_API_KEY (partagé)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="980" y="320" width="390" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="bindingsDev" value="Bindings : ASSETS · IMAGES&#10;WORKER_SELF_REFERENCE → parccours-dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="980" y="405" width="390" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d1Dev" value="D1 — parccours-dev&#10;7ce2cec3-3ff5…" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="480" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="usersDev" value="Toi seul (tests de recette)&#10;avant promotion en prod" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="980" y="600" width="390" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="noteDev" value="Manifest PWA DEV (icônes/nom &quot;ParcCours DEV&quot;)&#10;figé au build par APP_ENV=dev — permet de distinguer&#10;les deux PWA installées côte à côte" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="660" width="390" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ============ LEGEND ============ -->
+        <mxCell id="lg1" value="Actions / scripts (poste de dev)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="640" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg2" value="Garde-fou / vérification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="675" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg3" value="Config / build applicatif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="710" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg4" value="Secrets / variables / schéma" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="745" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg5" value="Services externes Cloudflare" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="780" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="lg6" value="Utilisateurs / trafic" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="815" width="230" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : poste de dev ============ -->
+        <mxCell id="e1" value="lance (avec argument prod|dev)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="sourcecode" target="batfiles">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="node scripts/deploy.js" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="batfiles" target="guard">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="uniquement si target=prod" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;" edge="1" parent="1" source="guard" target="githubmain">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="puis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="guard" target="migrate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="puis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="migrate" target="buildstep">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="puis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="buildstep" target="deploystep">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="cible parccours-db (target=prod)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="migrate" target="d1Prod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="cible parccours-dev --env dev (target=dev)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;" edge="1" parent="1" source="migrate" target="d1Dev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="wrangler deploy (racine) → PROD" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.35;exitDx=0;exitDy=0;" edge="1" parent="1" source="deploystep" target="prodBox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="wrangler deploy --env dev → DEV" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.65;exitDx=0;exitDy=0;" edge="1" parent="1" source="deploystep" target="devWorkerBox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="lit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;" edge="1" parent="1" source="pushsecrets" target="envfilesProd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="lit (--env dev)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;" edge="1" parent="1" source="pushsecrets" target="envfilesDev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="wrangler secret put" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.9;entryDx=0;entryDy=0;" edge="1" parent="1" source="pushsecrets" target="secretsProd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="wrangler secret put --env dev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.9;entryDx=0;entryDy=0;" edge="1" parent="1" source="pushsecrets" target="secretsDev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : google ============ -->
+        <mxCell id="e15" value="autorise" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="googleClient" target="redirectURIs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="valeurs identiques envoyées via&#10;push-secrets(.js) --env dev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0.3;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="googleClient" target="secretsProd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0.8;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="googleClient" target="secretsDev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" value="callback .../api/auth/callback/google&#10;(à déclarer pour ce domaine)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0.3;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="redirectURIs" target="prodBox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="callback .../api/auth/callback/google&#10;(à déclarer pour ce domaine)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;dashed=1;exitX=0.7;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="redirectURIs" target="devWorkerBox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ EDGES : workers internes ============ -->
+        <mxCell id="e20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="varsProd" target="secretsProd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="secretsProd" target="bindingsProd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="getCloudflareContext().env.DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="bindingsProd" target="d1Prod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" value="sert" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="bindingsProd" target="usersProd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="varsDev" target="secretsDev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="secretsDev" target="bindingsDev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" value="getCloudflareContext().env.DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="bindingsDev" target="d1Dev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" value="sert" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" edge="1" parent="1" source="bindingsDev" target="usersDev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

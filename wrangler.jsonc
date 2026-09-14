@@ -54,7 +54,43 @@
 			"head_sampling_rate": 1
 		}
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	// Identifie l'environnement au runtime (choix du manifest / des icônes PWA).
+	// Non sensible : ce n'est pas un secret, il a sa place ici.
+	"vars": {
+		"APP_ENV": "prod"
+	},
+	"env": {
+		// Worker de dev : `wrangler deploy --env dev`.
+		// Les bindings ne s'héritent PAS de la racine, ils doivent tous être redéclarés ici.
+		"dev": {
+			"name": "parccours-dev",
+			"vars": {
+				"APP_ENV": "dev"
+			},
+			"assets": {
+				"binding": "ASSETS",
+				"directory": ".open-next/assets"
+			},
+			"images": {
+				"binding": "IMAGES"
+			},
+			"services": [
+				{
+					// Doit pointer sur le Worker de dev, pas sur celui de prod
+					"binding": "WORKER_SELF_REFERENCE",
+					"service": "parccours-dev"
+				}
+			],
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "parccours-dev",
+					"database_id": "7ce2cec3-3ff5-4830-98c4-cf9e2b37bce9"
+				}
+			]
+		}
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

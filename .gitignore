@@ -58,3 +58,4 @@ next-env.d.ts
 !.dev.vars.example
 
 .vscode
+docs/journal-deploiement.md

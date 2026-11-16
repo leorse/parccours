@@ -1,0 +1,232 @@
+.root {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+	cursor: pointer;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	background: linear-gradient(180deg, #1b2150 0%, #26286a 40%, #3d3484 72%, #5d4192 100%);
+}
+
+.root:focus-visible {
+	outline: 3px solid #f0b871;
+	outline-offset: -3px;
+}
+
+.layer {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	overflow: visible;
+}
+
+/* ---------- Ciel ---------- */
+
+.stars {
+	transform-box: view-box;
+	transform-origin: 200px 400px;
+	transition: transform 1.6s cubic-bezier(0.6, 0, 0.9, 0.5);
+}
+
+.twinkle {
+	animation: twinkle 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+	from {
+		opacity: 0.2;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.float {
+	animation: float 7s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+	to {
+		transform: translateY(-6px);
+	}
+}
+
+/* ---------- Scène (zoom vers le portail) ---------- */
+
+.zoom {
+	transform-box: view-box;
+	transform-origin: 200px 520px;
+	transition: transform 1.3s cubic-bezier(0.65, 0, 0.95, 0.55);
+}
+
+.gateLeft,
+.gateRight {
+	transform-box: view-box;
+	transition: transform 1s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+.gateLeft {
+	transform-origin: 34px 600px;
+}
+
+.gateRight {
+	transform-origin: 366px 600px;
+}
+
+.portal {
+	opacity: 0;
+	transition: opacity 0.9s ease 0.15s;
+}
+
+.swirl {
+	transform-box: view-box;
+	transform-origin: 200px 520px;
+	animation: spin 5s linear infinite;
+	animation-play-state: paused;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.mascot {
+	transform-box: view-box;
+	transform-origin: 200px 640px;
+}
+
+.bob {
+	animation: bob 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes bob {
+	to {
+		transform: translateY(-5px);
+	}
+}
+
+.arm {
+	transform-box: view-box;
+	transform-origin: 250px 653px;
+	animation: point 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes point {
+	from {
+		transform: rotate(5deg);
+	}
+	to {
+		transform: rotate(-9deg);
+	}
+}
+
+.hint {
+	animation: pulse 1.6s ease-in-out infinite alternate;
+	transition: opacity 0.3s;
+}
+
+@keyframes pulse {
+	from {
+		opacity: 0.35;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.flash {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: 0;
+	background: radial-gradient(circle at 50% 62%, #fffaf0 0%, #e2ccff 30%, #8f6cf0 65%, #3d2f8f 100%);
+	transition: opacity 0.45s ease 0.85s;
+}
+
+/* ---------- Phase « open » : la grille s'ouvre, le portail s'allume ---------- */
+
+.open .gateLeft,
+.open .gateRight {
+	transform: scaleX(0.14);
+}
+
+.open .portal {
+	opacity: 1;
+}
+
+.open .swirl {
+	animation-play-state: running;
+}
+
+.open .hint {
+	opacity: 0;
+	animation: none;
+}
+
+/* La mascotte saute dans le portail */
+.open .mascot {
+	animation: jump 0.85s cubic-bezier(0.4, 0, 0.6, 1) 0.45s forwards;
+}
+
+@keyframes jump {
+	0% {
+		transform: none;
+		opacity: 1;
+	}
+	35% {
+		transform: translateY(-50px) scale(1.04);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(-120px) scale(0.06);
+		opacity: 0;
+	}
+}
+
+/* ---------- Phase « enter » : on plonge dans le portail ---------- */
+
+.enter .zoom {
+	transform: scale(14);
+}
+
+.enter .stars {
+	transform: scale(1.8);
+}
+
+.enter .flash {
+	opacity: 1;
+}
+
+/* ---------- Phase « inside » : on est passé de l'autre côté ---------- */
+
+.inside .layerScene {
+	visibility: hidden;
+}
+
+.inside .flash {
+	opacity: 0;
+	transition: opacity 0.9s ease;
+}
+
+/* Retour instantané à l'état initial pendant que la scène est cachée */
+.inside .stars,
+.inside .zoom,
+.inside .gateLeft,
+.inside .gateRight,
+.inside .portal {
+	transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.twinkle,
+	.float,
+	.bob,
+	.arm,
+	.swirl,
+	.hint {
+		animation: none;
+	}
+}

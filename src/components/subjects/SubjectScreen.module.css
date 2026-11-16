@@ -1,0 +1,264 @@
+.root {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+	user-select: none;
+	touch-action: none;
+	-webkit-tap-highlight-color: transparent;
+	background: linear-gradient(180deg, #1b2150 0%, #26286a 40%, #3d3484 72%, #5d4192 100%);
+}
+
+.layer {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	overflow: visible;
+}
+
+.twinkle {
+	animation: twinkle 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+	from {
+		opacity: 0.2;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* ---------- Éléments d'interface ---------- */
+
+.chrome {
+	transition: opacity 0.4s ease;
+}
+
+.chevron {
+	cursor: pointer;
+	fill: none;
+	stroke: #0d0a1f;
+	stroke-width: 8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transition: stroke 0.2s;
+}
+
+.chevron:hover {
+	stroke: #2a2350;
+}
+
+.neighbor {
+	opacity: 0.95;
+	animation: fadeIn 0.5s ease both;
+}
+
+.label {
+	animation: fadeIn 0.35s ease both;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+}
+
+/* ---------- Planète centrale ---------- */
+
+.planet {
+	cursor: pointer;
+}
+
+.float {
+	animation: float 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+	to {
+		transform: translateY(-8px);
+	}
+}
+
+/* Glissements entre planètes (0.45s, cf. SLIDE_MS) */
+.enterFromRight,
+.enterFromLeft,
+.enterFromTop,
+.enterFromBottom {
+	transform-box: view-box;
+	transform-origin: 200px 430px;
+	animation: 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.exitToLeft,
+.exitToRight,
+.exitToTop,
+.exitToBottom {
+	transform-box: view-box;
+	transform-origin: 200px 430px;
+	animation: 0.45s cubic-bezier(0.6, 0, 0.8, 0.4) forwards;
+}
+
+.enterFromRight {
+	animation-name: inRight;
+}
+.enterFromLeft {
+	animation-name: inLeft;
+}
+.enterFromTop {
+	animation-name: inTop;
+}
+.enterFromBottom {
+	animation-name: inBottom;
+}
+.exitToLeft {
+	animation-name: outLeft;
+}
+.exitToRight {
+	animation-name: outRight;
+}
+.exitToTop {
+	animation-name: outTop;
+}
+.exitToBottom {
+	animation-name: outBottom;
+}
+
+@keyframes inRight {
+	from {
+		transform: translateX(420px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes inLeft {
+	from {
+		transform: translateX(-420px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes inTop {
+	from {
+		transform: translateY(-560px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes inBottom {
+	from {
+		transform: translateY(560px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes outLeft {
+	to {
+		transform: translateX(-420px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes outRight {
+	to {
+		transform: translateX(420px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes outTop {
+	to {
+		transform: translateY(-560px) scale(0.55);
+		opacity: 0;
+	}
+}
+@keyframes outBottom {
+	to {
+		transform: translateY(560px) scale(0.55);
+		opacity: 0;
+	}
+}
+
+/* ---------- Zoom sur la planète choisie (1.1s, cf. ZOOM_MS) ---------- */
+
+/* Dézoom (retour des chapitres) : décélère */
+.zoomer {
+	transform-box: view-box;
+	transform-origin: 200px 430px;
+	transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.3, 1);
+}
+
+/* Zoom (choix de la planète) : accélère */
+.zooming .zoomer {
+	transform: scale(9);
+	transition: transform 1.1s cubic-bezier(0.6, 0, 0.9, 0.6);
+}
+
+.zooming .chrome {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.zooming .float {
+	animation-play-state: paused;
+}
+
+/* ---------- Arrivée depuis le portail du menu ---------- */
+
+.flash {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: 0;
+	background: radial-gradient(circle at 50% 62%, #fffaf0 0%, #e2ccff 30%, #8f6cf0 65%, #3d2f8f 100%);
+}
+
+.intro .flash {
+	animation: flashOut 0.9s ease both;
+}
+
+@keyframes flashOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.arrive {
+	transform-box: view-box;
+	transform-origin: 200px 430px;
+}
+
+.intro .arrive {
+	animation: arrive 1.1s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+@keyframes arrive {
+	from {
+		transform: scale(0.15);
+		opacity: 0;
+	}
+}
+
+.intro .chrome {
+	animation: fadeIn 0.6s ease 0.6s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.twinkle,
+	.float,
+	.intro .arrive,
+	.intro .chrome,
+	.neighbor,
+	.label {
+		animation: none;
+	}
+
+	.enterFromRight,
+	.enterFromLeft,
+	.enterFromTop,
+	.enterFromBottom,
+	.exitToLeft,
+	.exitToRight,
+	.exitToTop,
+	.exitToBottom {
+		animation-duration: 0.01s;
+	}
+}

@@ -1,0 +1,213 @@
+.root {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	background: linear-gradient(180deg, #1b2150 0%, #26286a 40%, #3d3484 72%, #5d4192 100%);
+	/* Colonne au format téléphone : toute la largeur sur mobile, centrée sur grand écran */
+	--column: min(100vw, 50dvh);
+}
+
+.sky {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.twinkle {
+	animation: twinkle 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+	from {
+		opacity: 0.2;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* ---------- Contenu défilant ---------- */
+
+.scroller {
+	position: absolute;
+	inset: 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: none;
+	touch-action: pan-y;
+}
+
+.scroller::-webkit-scrollbar {
+	display: none;
+}
+
+.content {
+	display: block;
+	width: var(--column);
+	height: auto;
+	margin: 0 auto;
+	overflow: visible;
+}
+
+.descend {
+	transform-box: view-box;
+	transform-origin: 200px 400px;
+	animation: descend 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes descend {
+	from {
+		transform: scale(1.35);
+		opacity: 0;
+	}
+}
+
+.chapter {
+	cursor: pointer;
+	outline: none;
+	transform-box: fill-box;
+	transform-origin: center;
+	transition: transform 0.2s ease;
+}
+
+.rise {
+	animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes rise {
+	from {
+		transform: translateY(24px);
+		opacity: 0;
+	}
+}
+
+.chapter:hover,
+.chapter:focus-visible {
+	transform: translateY(-4px);
+}
+
+.chapter:focus-visible rect {
+	stroke: #f0b871;
+}
+
+/* ---------- Zoom sur l'île choisie (0.9s, cf. ZOOM_MS) ---------- */
+
+/* Dézoom (retour des cours) : décélère */
+.zoomWrap {
+	transform-box: view-box;
+	transition:
+		transform 0.8s cubic-bezier(0.2, 0.6, 0.3, 1),
+		opacity 0.5s ease;
+}
+
+/* Zoom (choix de l'île) : accélère */
+.zoomed {
+	transform: scale(9);
+	transition:
+		transform 0.9s cubic-bezier(0.6, 0, 0.9, 0.6),
+		opacity 0.5s ease;
+}
+
+.faded,
+.leaving .sea,
+.zoomed .tag {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.sea,
+.header {
+	transition: opacity 0.4s ease;
+}
+
+/* L'étiquette ne réapparaît qu'en fin de dézoom (sinon on la voit en très grand) */
+.tag {
+	transition: opacity 0.3s ease 0.6s;
+}
+
+.zoomed .tag {
+	transition-delay: 0s;
+}
+
+.leaving .header {
+	opacity: 0;
+}
+
+.leaving .headerSvg {
+	pointer-events: none;
+}
+
+/* Retour depuis les cours : pas d'animations d'arrivée, seulement le dézoom */
+.returning .descend,
+.returning .rise,
+.returning .veil {
+	animation: none;
+}
+
+.returning .veil {
+	opacity: 0;
+}
+
+/* ---------- En-tête fixe ---------- */
+
+.header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	pointer-events: none;
+	/* Les îles passent sous l'en-tête en s'estompant */
+	background: linear-gradient(180deg, #1b2150 0%, #1b2150 70%, rgba(27, 33, 80, 0));
+}
+
+.headerSvg {
+	display: block;
+	width: var(--column);
+	height: auto;
+	margin: 0 auto;
+	pointer-events: auto;
+}
+
+.icon {
+	cursor: pointer;
+	outline: none;
+	transition: opacity 0.2s;
+}
+
+.icon:hover,
+.icon:focus-visible {
+	opacity: 0.7;
+}
+
+/* ---------- Arrivée ---------- */
+
+.veil {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	animation: veil 0.8s ease both;
+}
+
+@keyframes veil {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.twinkle,
+	.descend,
+	.rise {
+		animation: none;
+	}
+
+	.veil {
+		animation-duration: 0.01s;
+	}
+}

@@ -4,7 +4,7 @@
 	overflow: hidden;
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
-	background: #fbf0e0;
+	/* Fond = couleur de la prairie (posée en ligne) : visible pendant les fondus */
 }
 
 .scene {
@@ -16,7 +16,7 @@
 	overflow: visible;
 }
 
-/* ---------- Nuages qui dérivent de gauche à droite, en boucle ---------- */
+/* ---------- Nuages qui dérivent de gauche à droite, sur toute la largeur visible ---------- */
 
 .cloud {
 	animation-name: drift;
@@ -26,25 +26,14 @@
 
 @keyframes drift {
 	from {
-		transform: translateX(-600px);
+		transform: translateX(var(--cloud-from, -600px));
 	}
 	to {
-		transform: translateX(800px);
+		transform: translateX(var(--cloud-to, 800px));
 	}
 }
 
 /* ---------- Panneaux ---------- */
-
-.signDrop {
-	animation: drop 0.55s cubic-bezier(0.3, 1.5, 0.5, 1) both;
-}
-
-@keyframes drop {
-	from {
-		transform: translateY(-40px);
-		opacity: 0;
-	}
-}
 
 .sign {
 	cursor: pointer;
@@ -86,7 +75,34 @@
 	opacity: 0.6;
 }
 
-/* ---------- Arrivée ---------- */
+/* ---------- Traveling (cf. space/travel.ts) ---------- */
+
+/* Départ vers le parc : la caméra file du côté du panneau, la scène s'efface */
+.leaving .scene {
+	animation: travelOut 0.6s cubic-bezier(0.55, 0, 0.85, 0.5) forwards;
+	pointer-events: none;
+}
+
+@keyframes travelOut {
+	to {
+		transform: translateX(var(--travel-to));
+		opacity: 0;
+	}
+}
+
+/* Retour du parc : la caméra arrive en continuant son mouvement */
+.arriving .scene {
+	animation: travelIn 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes travelIn {
+	from {
+		transform: translateX(var(--travel-from));
+		opacity: 0;
+	}
+}
+
+/* ---------- Arrivée depuis l'île ---------- */
 
 .veil {
 	position: absolute;
@@ -106,12 +122,13 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.cloud,
-	.signDrop,
 	.picked {
 		animation: none;
 	}
 
-	.veil {
+	.veil,
+	.leaving .scene,
+	.arriving .scene {
 		animation-duration: 0.01s;
 	}
 }
